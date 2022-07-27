@@ -2,11 +2,19 @@ module github.com/BioChemML/SIC50/server
 
 go 1.18
 
-require github.com/gin-gonic/gin v1.8.1
+require (
+	github.com/gin-gonic/gin v1.8.1
+	github.com/google/uuid v1.3.0
+	github.com/pkg/errors v0.8.1
+	go.uber.org/zap v1.21.0
+)
 
 require (
-	github.com/galeone/tensorflow/tensorflow/go v0.0.0-20220620094824-6bb01e3a58fa // indirect
-	github.com/galeone/tfgo v0.0.0-20220622151904-fc7b7ccad83b // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+)
+
+require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -21,7 +29,7 @@ require (
 	github.com/tensorflow/tensorflow v2.9.0+incompatible
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
-	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
+	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
