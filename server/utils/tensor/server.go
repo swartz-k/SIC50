@@ -1,4 +1,4 @@
-package model
+package tensor
 
 import (
 	"fmt"
@@ -6,25 +6,26 @@ import (
 	"github.com/BioChemML/SIC50/server/utils/log"
 	"github.com/pkg/errors"
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
+	"os"
+	"path"
 )
 
 var model *tf.SavedModel
 
 func init() {
 	var err error
-	model, err = tf.LoadSavedModel("../model_p", []string{"serve"}, nil)
+	d, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
-	defer model.Session.Close()
+	mPath := path.Join(d, "../model_p")
+	model, err = tf.LoadSavedModel(mPath, []string{"serve"}, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "load model from %s", mPath))
+	}
 }
 
-func GenerateTensorResult(input, output string, imgPath string) ([]*tf.Tensor, error) {
-	model, err := tf.LoadSavedModel("../model_p", []string{"serve"}, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer model.Session.Close()
+func Cal(imgPath, input, output string) ([]*tf.Tensor, error) {
 	for _, i := range model.Graph.Operations() {
 		fmt.Printf("operation name: %s, inputs: %d, outputs: %d, type: %s \n", i.Name(), i.NumInputs(), i.NumOutputs(), i.Type())
 	}
