@@ -12,5 +12,5 @@ func init() {
 }
 
 func Info(format string, a ...any) {
-	logger.Info(fmt.Sprintf(format, a))
+	logger.Info(fmt.Sprintf(format, a...))
 }

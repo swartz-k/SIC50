@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/BioChemML/SIC50/server/utils/log"
 	"os"
 	"path"
 )
@@ -16,24 +17,28 @@ type Config struct {
 	MysqlPassword string `json:"mysql_password"`
 	// local dev or single deploy
 	SqlitePath string `json:"sqlite_path"`
-	// upload image save path
-	UploadPath string `json:"upload_path"`
+	// workdir  upload image save path
+	WorkDir   string `json:"upload_path"`
+	UploadDir string `json:"upload_dir"`
 }
 
 // init from config.yaml or env
 func init() {
-	// fixme
-	pwd, _ := os.Getwd()
+	workdir := os.Getenv("SIC50_WORKDIR")
+	if workdir == "" {
+		workdir, _ = os.Getwd()
+	}
 	if Cfg == nil {
 		sqliteDB := os.Getenv("SIC50_SQLITE_PATH")
 		if sqliteDB == "" {
-			sqliteDB = path.Join(pwd, "server.sqlite")
+			sqliteDB = path.Join(workdir, "server.sqlite")
 		}
-		p := path.Join(pwd, "data")
 		Cfg = &Config{
 			Addr:       "127.0.0.1:9097",
 			SqlitePath: sqliteDB,
-			UploadPath: p,
+			WorkDir:    workdir,
+			UploadDir:  path.Join(workdir, "data"),
 		}
 	}
+	log.Info("config %+v \n", Cfg)
 }

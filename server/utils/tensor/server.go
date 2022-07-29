@@ -2,11 +2,11 @@ package tensor
 
 import (
 	"fmt"
+	"github.com/BioChemML/SIC50/server/config"
 	"github.com/BioChemML/SIC50/server/utils/image"
 	"github.com/BioChemML/SIC50/server/utils/log"
 	"github.com/pkg/errors"
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
-	"os"
 	"path"
 )
 
@@ -14,11 +14,7 @@ var model *tf.SavedModel
 
 func init() {
 	var err error
-	d, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	mPath := path.Join(d, "../model_p")
+	mPath := path.Join(config.Cfg.WorkDir, "model_p")
 	model, err = tf.LoadSavedModel(mPath, []string{"serve"}, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "load model from %s", mPath))

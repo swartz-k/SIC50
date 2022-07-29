@@ -23,7 +23,7 @@ func Upload(c *gin.Context) {
 			mfh = i
 		}
 	}
-	fPath := path.Join(config.Cfg.UploadPath, uuid.New().String())
+	fPath := path.Join(config.Cfg.UploadDir, uuid.New().String())
 	err = image.Save(mfh, fPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)

@@ -89,7 +89,7 @@ func (t *Task) Cal(ctx context.Context) (*Task, error) {
 		Steps[0] ctl compare
 		Steps[1] compare with ctl
 	*/
-	basePath := path.Join(config.Cfg.UploadPath, t.TaskId)
+	basePath := path.Join(config.Cfg.UploadDir, t.TaskId)
 	if _, err := os.Open(basePath); os.IsNotExist(err) {
 		_ = os.Mkdir(t.TaskId, 0644)
 	}
@@ -98,7 +98,7 @@ func (t *Task) Cal(ctx context.Context) (*Task, error) {
 	}()
 	for k, s := range t.Config.Steps {
 		sPath := path.Join(basePath, fmt.Sprintf("%d", k))
-		err := os.Mkdir(sPath, 0644)
+		err := os.MkdirAll(sPath, 0777)
 		if err != nil {
 			return nil, errors.Wrapf(err, "mkdir for task step %s", sPath)
 		}
@@ -113,7 +113,7 @@ func (t *Task) Cal(ctx context.Context) (*Task, error) {
 		}
 	}
 
-	r, err := tensor.Cal("", t.Config.InputLayer, t.Config.OutputLayer)
+	r, err := tensor.Cal(basePath, t.Config.InputLayer, t.Config.OutputLayer)
 	if err != nil {
 		return nil, errors.Wrap(err, "cal tensor")
 	}
