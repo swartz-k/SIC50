@@ -37,6 +37,7 @@ func (r *CreateTask) GetTask() *model.Task {
 		Config: &model.TaskConfig{
 			InputLayer:  r.Input,
 			OutputLayer: r.Output,
+			Output:      &model.TaskOutput{},
 			Steps:       steps,
 		},
 		Status: model.TaskStatusPending,

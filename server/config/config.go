@@ -18,8 +18,9 @@ type Config struct {
 	// local dev or single deploy
 	SqlitePath string `json:"sqlite_path"`
 	// workdir  upload image save path
-	WorkDir   string `json:"upload_path"`
-	UploadDir string `json:"upload_dir"`
+	WorkDir    string `json:"upload_path"`
+	UploadDir  string `json:"upload_dir"`
+	PythonPath string `json:"python_path"`
 }
 
 // init from config.yaml or env
@@ -39,6 +40,12 @@ func init() {
 			WorkDir:    workdir,
 			UploadDir:  path.Join(workdir, "data"),
 		}
+	}
+	pythonPath := os.Getenv("SIC50_PYTHON_PATH")
+	if pythonPath != "" {
+		Cfg.PythonPath = pythonPath
+	} else {
+		Cfg.PythonPath = "python3.7"
 	}
 	log.Info("config %+v \n", Cfg)
 }

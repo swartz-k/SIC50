@@ -37,7 +37,7 @@ Trainable params: 6,815,298
 Non-trainable params: 0
 
 """
-TRAINING_DIR = ('../images/success')
+TRAINING_DIR = ('testabc')
 # TRAINING_DIR = ('../images/Cephalotaxin')
 training_datagen = ImageDataGenerator(
       rescale = 1./255,
@@ -50,7 +50,7 @@ training_datagen = ImageDataGenerator(
       fill_mode='nearest')
 
 
-VALIDATION_DIR = ('../images/success')
+VALIDATION_DIR = ('testabc')
 # VALIDATION_DIR = ('../images/Cephalotaxin')
 validation_datagen = ImageDataGenerator(rescale = 1./255)
 
@@ -95,8 +95,15 @@ model.summary()
 
 model.compile(loss = 'categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
-history = model.fit(train_generator, epochs=30, steps_per_epoch=30, validation_data = validation_generator, verbose = 1, validation_steps=3)
+history = model.fit(train_generator, epochs=3, steps_per_epoch=1, validation_data = validation_generator, verbose = 1, validation_steps=3)
 
 print(history)
 
-model.save('model_p')
+
+print(model.evaluate(training_datagen.flow_from_directory(
+	'testabc',
+	target_size=(198,198),
+	class_mode='categorical',
+  batch_size=2
+)))
+

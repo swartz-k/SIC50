@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, Card, Col, Input, InputGroup, Layout, Row, Select, Tag, Typography } from '@douyinfe/semi-ui'
+import { Button, Card, Col, Descriptions, Input, Layout, Row, Tag } from '@douyinfe/semi-ui'
 import useTranslation from 'hooks/useTranslation'
-import { IconSearch } from '@douyinfe/semi-icons'
+import { IconSearch, IconClose, IconRefresh } from '@douyinfe/semi-icons'
 import { useState } from 'react'
 import axios from 'axios'
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTasks } from 'hooks/useTask'
 import { ITask } from 'types/ITask'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default () => {
-  const { Text } = Typography
   const [t] = useTranslation()
-  const { tasks } = useTasks()
+  const { tasks, removeTask } = useTasks()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [searchLoading, setSearchLoading] = useState(false)
@@ -68,6 +67,8 @@ export default () => {
                       color='blue'
                       type='light'
                       style={{ marginRight: '5px', marginBottom: '5px' }}
+                      closable
+                      onClose={() => removeTask(tid)}
                     >
                       {tid}
                     </Tag>
@@ -77,7 +78,42 @@ export default () => {
             </Col>
           </Row>
         ) : (
-          <Text>{task.CreatedAt}</Text>
+          <div style={{ marginTop: '29px' }}>
+            <Card
+              title={t('result')}
+              headerExtraContent={
+                <div>
+                  <Button theme='borderless' loading={searchLoading} onClick={queryTaskId}>
+                    <IconRefresh />
+                  </Button>
+                  <Button theme='borderless' onClick={() => setTask(undefined)}>
+                    <IconClose />
+                  </Button>
+                </div>
+              }
+            >
+              <Descriptions>
+                <Descriptions.Item itemKey='ID'>{task.ID}</Descriptions.Item>
+                <Descriptions.Item itemKey={t('create_at')}>{task.CreatedAt}</Descriptions.Item>
+                <Descriptions.Item itemKey={t('status')}>{task.status}</Descriptions.Item>
+              </Descriptions>
+
+              {task.status === 'SUCCESS' && (
+                <LineChart
+                  width={600}
+                  height={300}
+                  data={task.config.output.result}
+                  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+                >
+                  <Line type='monotone' dataKey='res' stroke='#8884d8' />
+                  <CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
+                  <XAxis dataKey='con' />
+                  <YAxis />
+                  <Tooltip />
+                </LineChart>
+              )}
+            </Card>
+          </div>
         )}
       </Card>
     </Layout>

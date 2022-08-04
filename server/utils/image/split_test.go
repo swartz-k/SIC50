@@ -1,16 +1,22 @@
 package image
 
 import (
-	"fmt"
-	"os"
 	"testing"
 )
 
 func TestSplit(t *testing.T) {
-	img, err := os.Open("test/edge_B16_Paclitaxel_ctrl_con1_20220703-1_C07_sx_1_sy_1_w1-043.png")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer img.Close()
-	fmt.Println(Split(img))
+	img := "test/test.png"
+
+	min, err := Split(img, 201, 201)
+	t.Logf("img %s total %d, err %+v", img, min, err)
+}
+
+func Test_generateName(t *testing.T) {
+	a := "tmp/a.b.c.png"
+	b := "/a/b/c/da.png"
+	c := "aaaaa"
+	suffix := "1-1"
+	t.Logf("name for %s if %s", a, generateName(a, suffix))
+	t.Logf("name for %s if %s", b, generateName(b, suffix))
+	t.Logf("name for %s if %s", c, generateName(c, suffix))
 }

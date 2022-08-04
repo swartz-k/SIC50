@@ -12,6 +12,7 @@ func Register(r *gin.Engine) error {
 		return errors.Wrap(err, "get auth middle ware")
 	}
 
+	r.GET("/api/v1/overview", handler.Overview)
 	r.POST("/api/v1/upload", handler.Upload)
 
 	r.GET("/api/v1/task", handler.GetTask)

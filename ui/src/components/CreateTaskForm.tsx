@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useState } from 'react'
-import { Form, Col, Row, Button, Slider, InputNumber, Upload, ArrayField } from '@douyinfe/semi-ui'
+import { Form, Col, Row, Button, Slider, InputNumber, Upload, ArrayField, Toast } from '@douyinfe/semi-ui'
 import { IconPlusCircle, IconMinusCircle, IconUpload } from '@douyinfe/semi-icons'
 
 import useTranslation from 'hooks/useTranslation'
@@ -24,6 +24,7 @@ export default () => {
       try {
         const resp = await axios.post<ITaskResponse>('/api/v1/task/async', vals)
         addTask(resp.data.task_id)
+        Toast.success(`${t('task_submit_success_tooltip')} ${resp.data.task_id}`)
       } finally {
         setLoading(false)
       }

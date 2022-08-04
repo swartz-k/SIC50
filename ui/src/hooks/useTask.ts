@@ -10,8 +10,7 @@ export const useTasks = () => {
   const addTask = useCallback((task_id: string) => {
     const _tasks = Cookies.get('task_ids') ?? ''
     const tasks = _tasks.split(',')
-    tasks.push(task_id)
-    Cookies.set('task_ids', tasks.join(','))
+    Cookies.set('task_ids', [task_id, ...tasks].join(','))
   }, [])
 
   const removeTask = useCallback((task_id: string) => {

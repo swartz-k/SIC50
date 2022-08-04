@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/BioChemML/SIC50/server/api/req"
 	"github.com/BioChemML/SIC50/server/model"
+	"github.com/BioChemML/SIC50/server/utils/log"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"net/http"
@@ -18,6 +19,7 @@ func GetTask(c *gin.Context) {
 		return
 	}
 	t, err := model.TaskModel.GetByTaskId(taskId)
+	log.Info("get task by id %s, %+v", taskId, t)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errors.Wrap(err, "get task"))
 		return
